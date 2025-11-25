@@ -14,20 +14,13 @@ function setPromptText(newText) {
     promptParagraph.textContent = newText;
   }
 }
-function wrongChoice1(wrongChoice) {
-  // This function makes the left button the wrong choice
-  var wrongChoice1 = document.querySelector(".button1 button");
-  // If the element exists, set its text content to the provided string
-  if (wrongChoice1) {
-    wrongChoice1.textContent = wrongChoice;
-  }
-}
 
 // When the user clicks the "Question one" button, call this function
 function question1() {
   // Update the prompt to a question about SpongeBob
-  setPromptText("Question 1: What street does SpongeBob live at?");
-
+  setPromptText("Question 1: What street does SpongeBob live on?");
+  document.querySelector(".questionchoices").style.opacity = 1;
+  document.querySelector(".questionchoices").style.position = "static";
 }
 
 // When the user clicks the "Question two" button, call this function
