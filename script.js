@@ -61,3 +61,15 @@ function question3() {
 }
 
 // AI-generated code ends here
+// Choices change their status of being correct. Left button won't always be correct, and vice versa.
+function choice1() {
+  setPromptText("Correct! SpongeBob lives on Conch St.");
+  document.querySelector(".questionchoices").style.opacity = 0;
+  document.querySelector(".questionchoices").style.position = "absolute";
+}
+
+function choice2() {
+  setPromptText("Incorrect. SpongeBob actually lives on Conch St.");
+  document.querySelector(".questionchoices").style.opacity = 0;
+  document.querySelector(".questionchoices").style.position = "absolute";
+}
