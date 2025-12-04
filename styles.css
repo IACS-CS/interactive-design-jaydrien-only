@@ -1,9 +1,26 @@
+/* font */
+@import url('https://fonts.googleapis.com/css2?family=Nabla&display=swap');
+h1 {
+  font-family: "Nabla", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "EDPT" 100,
+    "EHLT" 12;
+}
+
 .questionchoices{
   position: absolute;
   opacity: 0;
 }
 .questionchoices button {
-border-radius: 999px; padding: 0.5rem 1.25rem;
+  border-radius: 999px; padding: 0.5rem 1.25rem;
+  border-color:#005fa3;
+  font-weight: bold;
+  color: rgb(4, 144, 144);
+  background: rgb(188, 231, 255);
+
 }
 .questionchoices button:hover { 
   background: #005fa3; transform: translateY(-2px); 
@@ -12,5 +29,9 @@ body {
   background-color: yellow;
 }
 h1 {
+  color: rgb(4, 144, 144);
+  text-shadow: 2px 3px 1px #005fa3;
+}
+.prompt {
   color: rgb(4, 144, 144);
 }
