@@ -103,11 +103,8 @@ function question3() {
   shuffleChoiceButtons(); // randomize their order
   document.querySelector(".questionchoices").style.opacity = 1;
   document.querySelector(".questionchoices").style.position = "static";
-  correct = "SpongeBob's favorite thing are making Krabby Patties.";
+  correct = "SpongeBob's favorite thing is making Krabby Patties.";
 }
-
-// AI-generated code ends here
-
 
 // Shuffle the choice buttons by reordering the DOM nodes.
 // This preserves event listeners, classes, and data-* attributes.
