@@ -12,27 +12,21 @@
     <base href="./" />
   </head>
   <body>
-    <h1>SPONGEBOB TEST</h1>
+    <h1>SPONGEBOB QUIZ</h1>
     <div class="questions">
-      <ul>
-      <button onclick="question1()">Question one</button>
-      <button onclick="question2()">Question two</button>
-      <button onclick="question3()">Question three</button>
-      <button onclick="question4()">Question four</button>
-      <button onclick="question5()">Question five</button>
-      <button onclick="question6()">Question six</button>
-      <button onclick="question7()">Question seven</button>
-      <button onclick="question8()">Question eight</button>
-      <button onclick="question9()">Question nine</button>
-      <button onclick="question10()">Question ten</button>
-    </ul>
+      <button onclick="question1()">Start</button>
     </div>
     <main class="prompt">
       <p>
-        How much do you know SpongeBob? Click these buttons to answer a question
-        about SpongeBob.
+        How much do you know SpongeBob? Click start to find out if you are a
+        true SpongeBob fan!
       </p>
     </main>
+    <!-- Progress bar: first character reflects `score` variable -->
+    <div class="progressbar" aria-hidden="true">
+      <span class="progress-first">0</span
+      ><span class="progress-rest">/10 answered correctly</span>
+    </div>
     <div class="questionchoices">
       <button onclick="handleChoice(this)">Yeah</button>
       <button onclick="handleChoice(this)">Nope</button>

@@ -5,10 +5,18 @@ console.log("Hello, Interactive Graphic Design!");
 let correct = 0;
 // Variable to track the current question number. Also used to determine the current image shown.
 let questionNumber = 0;
-
+// Variable to track which question comes next (auto-advance on correct answer)
+let nextQuestion = 2;
+// Variable to store the timeout ID so we can cancel it if needed
+let autoAdvanceTimeout = null;
+// Variable to track a simple numeric score. The progress bar will show
+// the `score` value's first character inside `.progress-first`.
+let score = 0;
 // Initialize: hide choice buttons on page load (questionNumber starts at 0, which is < 1)
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelector(".questionchoices").classList.add("hidden");
+  // Initialize the progress bar display on load
+  if (typeof updateProgressBar === "function") updateProgressBar();
 });
 
 // AI-generated code starts here
@@ -19,9 +27,9 @@ function setPromptText(newText) {
   // Find the <p> inside the element with class "prompt"
   var promptParagraph = document.querySelector(".prompt p");
 
-  // If the element exists, set its text content to the provided string
+  // If the element exists, set its HTML content (allows formatting like <b> and <span>)
   if (promptParagraph) {
-    promptParagraph.textContent = newText;
+    promptParagraph.innerHTML = newText;
   }
 }
 
@@ -61,7 +69,7 @@ function updateImage() {
     7: "./images/plankton.png",
     8: "./images/boatinglicense.png",
     9: "./images/kingneptune.png",
-    10: "./images/pineapple.png",
+    10: "./images/pineapple.jpg",
   };
 
   // Look up the image file for the current question number
@@ -71,6 +79,31 @@ function updateImage() {
   if (imageSrc) {
     imageElement.src = imageSrc;
   }
+}
+
+// Helper function: schedule the next question to load after 5 seconds on correct answer
+function scheduleNextQuestion() {
+  // Clear any existing timeout (in case user clicked multiple times)
+  if (autoAdvanceTimeout) {
+    clearTimeout(autoAdvanceTimeout);
+  }
+
+  // Schedule the next question to load after 4000 milliseconds (4 seconds)
+  autoAdvanceTimeout = setTimeout(function () {
+    // Call the next question function dynamically
+    var nextQuestionFunc = window["question" + nextQuestion];
+    if (nextQuestionFunc) {
+      nextQuestionFunc();
+      // Increment nextQuestion for the following correct answer
+      nextQuestion = nextQuestion + 1;
+    }
+  }, 1000);
+}
+// Update the small progress bar: only the first character reflects `score`.
+function updateProgressBar() {
+  var el = document.querySelector(".progress-first");
+  if (!el) return;
+  el.textContent = score;
 }
 
 // New: set data attributes for correctness so behavior follows the button when shuffled
@@ -91,9 +124,24 @@ function handleChoice(buttonEl) {
   if (!buttonEl) return;
   var answer = buttonEl.dataset.answer;
   if (answer === "correct") {
-    setPromptText("Correct! " + correct);
+    // Display "Correct!" in bold and green, followed by the explanation
+    setPromptText(
+      "<b style='color: forestgreen;'>Correct!</b> " +
+        correct +
+        " <b style='color: forestgreen;'>You are a real SpongeBob fan!</b>"
+    );
+    // Schedule the next question to auto-load after 5 seconds
+    scheduleNextQuestion();
+    // Increment score and update the progress bar (only the first character changes)
+    score = score + 1;
+    updateProgressBar();
   } else {
-    setPromptText("Incorrect. " + correct);
+    // Display "Incorrect." in bold and red, followed by the explanation
+    setPromptText(
+      "<b style='color: red;'>Incorrect.</b> " +
+        correct +
+        " <b style='color: red;'>You are not a real SpongeBob fan.</b>"
+    );
   }
   // Hide buttons using CSS class instead of direct style manipulation
   document.querySelector(".questionchoices").classList.add("hidden");
@@ -116,7 +164,17 @@ function question1() {
   document.querySelector(".spongebobimage").classList.add("hidden");
   // This variable will be used in the prompt text to change based on the question
   correct = "SpongeBob lives on Conch St.";
+  score = 0; // reset score at the start of question 1
   questionNumber = 1;
+  nextQuestion = 2;
+  // Clear any pending auto-advance timeout when (re)starting question 1
+  if (autoAdvanceTimeout) {
+    clearTimeout(autoAdvanceTimeout);
+    autoAdvanceTimeout = null;
+  }
+  // Reset score when restarting the quiz at question 1
+  score = 0;
+  updateProgressBar();
   updateImage(); // change the image to match this question
 }
 
@@ -178,7 +236,7 @@ function question5() {
   updateImage(); // change the image to match this question
 }
 function question6() {
-  setPromptText("Question 6: Is Jerry really different from Larry");
+  setPromptText("Question 6: Is Jerry really different from Larry?");
   setChoiceText("Yes, very", "No, not at all");
   setChoiceDataAttributes(true);
   shuffleChoiceButtons();
@@ -218,7 +276,7 @@ function question9() {
   shuffleChoiceButtons();
   document.querySelector(".questionchoices").classList.remove("hidden");
   document.querySelector(".spongebobimage").classList.add("hidden");
-  correct = "SpongeBob has defeated a god, King Neptune.";
+  correct = "SpongeBob has defeated a god; King Neptune.";
   questionNumber = 9;
   updateImage(); // change the image to match this question
 }
@@ -231,9 +289,17 @@ function question10() {
   shuffleChoiceButtons();
   document.querySelector(".questionchoices").classList.remove("hidden");
   document.querySelector(".spongebobimage").classList.add("hidden");
-  correct = "SpongeBob has never had to move out of his old Pineapple house.";
+  correct = "SpongeBob has had to move out of his old Pineapple house.";
   questionNumber = 10;
   updateImage(); // change the image to match this question
+}
+function question11() {
+  setPromptText(
+    "Congratulations! You have completed the SpongeBob quiz. You are the realest of SpongeBob fans!"
+  );
+  // Hide choice buttons and image at the end of the game
+  document.querySelector(".questionchoices").classList.add("hidden");
+  document.querySelector(".spongebobimage").classList.add("hidden");
 }
 // Shuffle the choice buttons by reordering the DOM nodes.
 // This preserves event listeners, classes, and data-* attributes.
