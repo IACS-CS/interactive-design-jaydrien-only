@@ -3,6 +3,14 @@ console.log("Hello, Interactive Graphic Design!");
 
 // Variable to hold the correct answer text for each question
 let correct = 0;
+// Variable to track the current question number. Also used to determine the current image shown.
+let questionNumber = 0;
+
+// Initialize: hide choice buttons on page load (questionNumber starts at 0, which is < 1)
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelector(".questionchoices").classList.add("hidden");
+});
+
 // AI-generated code starts here
 // Student prompt was: How do I change the prompt text so that it changes when the button is pressed?
 
@@ -36,6 +44,34 @@ function setChoiceText(firstText, secondText) {
     buttons[1].textContent = secondText;
   }
 }
+// Function: change the image based on the current question number
+function updateImage() {
+  var imageElement = document.querySelector(".spongebobimage img");
+  if (!imageElement) return;
+
+  // Set the image source based on the question number
+  // Map each question to its corresponding image file
+  var imageMap = {
+    1: "./images/spongebob.png",
+    2: "./images/goodkrabbypatty.png",
+    3: "./images/goodkrabbypatty.png",
+    4: "./images/patrick.png",
+    5: "./images/superhero.png",
+    6: "./images/gary.png",
+    7: "./images/plankton.png",
+    8: "./images/boatinglicense.png",
+    9: "./images/kingneptune.png",
+    10: "./images/pineapple.png",
+  };
+
+  // Look up the image file for the current question number
+  var imageSrc = imageMap[questionNumber];
+
+  // If a mapping exists for this question, update the img src
+  if (imageSrc) {
+    imageElement.src = imageSrc;
+  }
+}
 
 // New: set data attributes for correctness so behavior follows the button when shuffled
 function setChoiceDataAttributes(firstIsCorrect) {
@@ -59,8 +95,10 @@ function handleChoice(buttonEl) {
   } else {
     setPromptText("Incorrect. " + correct);
   }
-  document.querySelector(".questionchoices").style.opacity = 0;
-  document.querySelector(".questionchoices").style.position = "absolute";
+  // Hide buttons using CSS class instead of direct style manipulation
+  document.querySelector(".questionchoices").classList.add("hidden");
+  // Show the image when an answer is chosen
+  document.querySelector(".spongebobimage").classList.remove("hidden");
 }
 
 // When the user clicks the "Question one" button, call this function
@@ -72,10 +110,14 @@ function question1() {
   // Mark which button is correct BEFORE shuffling so the data attribute moves with the node
   setChoiceDataAttributes(true); // first button (Conch St) is correct for question1
   shuffleChoiceButtons(); // randomize their order
-  document.querySelector(".questionchoices").style.opacity = 1;
-  document.querySelector(".questionchoices").style.position = "static";
+  // Show items using CSS class instead of direct style manipulation
+  document.querySelector(".questionchoices").classList.remove("hidden");
+  // Hide the image during the question
+  document.querySelector(".spongebobimage").classList.add("hidden");
   // This variable will be used in the prompt text to change based on the question
   correct = "SpongeBob lives on Conch St.";
+  questionNumber = 1;
+  updateImage(); // change the image to match this question
 }
 
 // When the user clicks the "Question two" button, call this function
@@ -88,9 +130,13 @@ function question2() {
   // For question2 the first choice is the correct one
   setChoiceDataAttributes(true);
   shuffleChoiceButtons(); // randomize their order
-  document.querySelector(".questionchoices").style.opacity = 1;
-  document.querySelector(".questionchoices").style.position = "static";
+  // Show buttons using CSS class
+  document.querySelector(".questionchoices").classList.remove("hidden");
+  // Hide the image during the question
+  document.querySelector(".spongebobimage").classList.add("hidden");
   correct = "SpongeBob loves his job at the Krusty Krab.";
+  questionNumber = 2;
+  updateImage(); // change the image to match this question
 }
 
 // When the user clicks the "Question three" button, call this function
@@ -101,11 +147,94 @@ function question3() {
   // For question3 the second choice (Krabby Patties) is correct
   setChoiceDataAttributes(false);
   shuffleChoiceButtons(); // randomize their order
-  document.querySelector(".questionchoices").style.opacity = 1;
-  document.querySelector(".questionchoices").style.position = "static";
+  // Show buttons using CSS class
+  document.querySelector(".questionchoices").classList.remove("hidden");
+  // Hide the image during the question
+  document.querySelector(".spongebobimage").classList.add("hidden");
   correct = "SpongeBob's favorite thing is making Krabby Patties.";
+  questionNumber = 3;
+  updateImage(); // change the image to match this question
 }
-
+function question4() {
+  setPromptText("Question 4: Who is SpongeBob's best friend?");
+  setChoiceText("Patrick Star", "Spat, his spatula");
+  setChoiceDataAttributes(true);
+  shuffleChoiceButtons();
+  document.querySelector(".questionchoices").classList.remove("hidden");
+  document.querySelector(".spongebobimage").classList.add("hidden");
+  correct = "SpongeBob's best friend is Patrick Star.";
+  questionNumber = 4;
+  updateImage(); // change the image to match this question
+}
+function question5() {
+  setPromptText("Question 5: Has SpongeBob ever been a superhero?");
+  setChoiceText("No", "Yes");
+  setChoiceDataAttributes(false);
+  shuffleChoiceButtons();
+  document.querySelector(".questionchoices").classList.remove("hidden");
+  document.querySelector(".spongebobimage").classList.add("hidden");
+  correct = "SpongeBob has been a superhero called 'The Quickster'.";
+  questionNumber = 5;
+  updateImage(); // change the image to match this question
+}
+function question6() {
+  setPromptText("Question 6: Is Jerry really different from Larry");
+  setChoiceText("Yes, very", "No, not at all");
+  setChoiceDataAttributes(true);
+  shuffleChoiceButtons();
+  document.querySelector(".questionchoices").classList.remove("hidden");
+  document.querySelector(".spongebobimage").classList.add("hidden");
+  correct =
+    "Jerry is very different from Larry. Why did you have to go, Gary???";
+  questionNumber = 6;
+  updateImage(); // change the image to match this question
+}
+function question7() {
+  setPromptText("Question 7: Does SpongeBob hate Plankton?");
+  setChoiceText("Yes", "No");
+  setChoiceDataAttributes(false);
+  shuffleChoiceButtons();
+  document.querySelector(".questionchoices").classList.remove("hidden");
+  document.querySelector(".spongebobimage").classList.add("hidden");
+  correct = "SpongeBob does not hate Plankton.";
+  questionNumber = 7;
+  updateImage(); // change the image to match this question
+}
+function question8() {
+  setPromptText("Question 8: Will SpongeBob ever get his boating license?");
+  setChoiceText("Never", "One day he will");
+  setChoiceDataAttributes(true);
+  shuffleChoiceButtons();
+  document.querySelector(".questionchoices").classList.remove("hidden");
+  document.querySelector(".spongebobimage").classList.add("hidden");
+  correct = "SpongeBob is never going to get his boating license.";
+  questionNumber = 8;
+  updateImage(); // change the image to match this question
+}
+function question9() {
+  setPromptText("Question 9: Has SpongeBob ever defeated a god?");
+  setChoiceText("Yes", "No");
+  setChoiceDataAttributes(true);
+  shuffleChoiceButtons();
+  document.querySelector(".questionchoices").classList.remove("hidden");
+  document.querySelector(".spongebobimage").classList.add("hidden");
+  correct = "SpongeBob has defeated a god, King Neptune.";
+  questionNumber = 9;
+  updateImage(); // change the image to match this question
+}
+function question10() {
+  setPromptText(
+    "Question 10: Has SpongeBob ever had to move out of his old Pineapple house?"
+  );
+  setChoiceText("Yes", "No");
+  setChoiceDataAttributes(true);
+  shuffleChoiceButtons();
+  document.querySelector(".questionchoices").classList.remove("hidden");
+  document.querySelector(".spongebobimage").classList.add("hidden");
+  correct = "SpongeBob has never had to move out of his old Pineapple house.";
+  questionNumber = 10;
+  updateImage(); // change the image to match this question
+}
 // Shuffle the choice buttons by reordering the DOM nodes.
 // This preserves event listeners, classes, and data-* attributes.
 function shuffleChoiceButtons() {
