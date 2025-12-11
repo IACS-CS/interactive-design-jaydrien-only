@@ -5,10 +5,8 @@ console.log("Hello, Interactive Graphic Design!");
 let correct = 0;
 // Variable to track the current question number. Also used to determine the current image shown.
 let questionNumber = 0;
-// Variable to track which question comes next (auto-advance on correct answer)
+// Variable to track which question comes next (advance on correct answer)
 let nextQuestion = 2;
-// Variable to store the timeout ID so we can cancel it if needed
-let autoAdvanceTimeout = null;
 // Variable to track a simple numeric score. The progress bar will show
 // the `score` value's first character inside `.progress-first`.
 let score = 0;
@@ -17,6 +15,34 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelector(".questionchoices").classList.add("hidden");
   // Initialize the progress bar display on load
   if (typeof updateProgressBar === "function") updateProgressBar();
+
+  // AI-generated code starts here
+  // Set up event listeners for buttons instead of using onclick attributes
+
+  // Start button listener
+  var startButton = document.querySelector("#start-button");
+  if (startButton) {
+    startButton.addEventListener("click", function () {
+      question1();
+    });
+  }
+
+  // Choice button listeners
+  var choiceButtons = document.querySelectorAll(".choice-button");
+  choiceButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      handleChoice(this);
+    });
+  });
+
+  // Next button listener
+  var nextButton = document.querySelector("#next-button");
+  if (nextButton) {
+    nextButton.addEventListener("click", function () {
+      goToNextQuestion();
+    });
+  }
+  // AI-generated code ends here
 });
 
 // AI-generated code starts here
@@ -81,23 +107,31 @@ function updateImage() {
   }
 }
 
-// Helper function: schedule the next question to load after 5 seconds on correct answer
-function scheduleNextQuestion() {
-  // Clear any existing timeout (in case user clicked multiple times)
-  if (autoAdvanceTimeout) {
-    clearTimeout(autoAdvanceTimeout);
+// Helper function: show the Next button when user answers correctly
+function showNextButton() {
+  var nextBtn = document.querySelector(".nextbutton");
+  if (nextBtn) {
+    nextBtn.classList.remove("hidden");
   }
+}
 
-  // Schedule the next question to load after 4000 milliseconds (4 seconds)
-  autoAdvanceTimeout = setTimeout(function () {
-    // Call the next question function dynamically
-    var nextQuestionFunc = window["question" + nextQuestion];
-    if (nextQuestionFunc) {
-      nextQuestionFunc();
-      // Increment nextQuestion for the following correct answer
-      nextQuestion = nextQuestion + 1;
-    }
-  }, 1000);
+// Helper function: hide the Next button
+function hideNextButton() {
+  var nextBtn = document.querySelector(".nextbutton");
+  if (nextBtn) {
+    nextBtn.classList.add("hidden");
+  }
+}
+
+// Handler for the Next button: advance to the next question
+function goToNextQuestion() {
+  // Call the next question function dynamically
+  var nextQuestionFunc = window["question" + nextQuestion];
+  if (nextQuestionFunc) {
+    nextQuestionFunc();
+    // Increment nextQuestion for the following correct answer
+    nextQuestion = nextQuestion + 1;
+  }
 }
 // Update the small progress bar: only the first character reflects `score`.
 function updateProgressBar() {
@@ -130,8 +164,8 @@ function handleChoice(buttonEl) {
         correct +
         " <b style='color: forestgreen;'>You are a real SpongeBob fan!</b>"
     );
-    // Schedule the next question to auto-load after 5 seconds
-    scheduleNextQuestion();
+    // Show the Next button so user can click to continue
+    showNextButton();
     // Increment score and update the progress bar (only the first character changes)
     score = score + 1;
     updateProgressBar();
@@ -142,6 +176,8 @@ function handleChoice(buttonEl) {
         correct +
         " <b style='color: red;'>You are not a real SpongeBob fan.</b>"
     );
+    // Don't show Next button for incorrect answers
+    hideNextButton();
   }
   // Hide buttons using CSS class instead of direct style manipulation
   document.querySelector(".questionchoices").classList.add("hidden");
@@ -162,16 +198,13 @@ function question1() {
   document.querySelector(".questionchoices").classList.remove("hidden");
   // Hide the image during the question
   document.querySelector(".spongebobimage").classList.add("hidden");
+  // Hide the Next button until an answer is chosen
+  hideNextButton();
   // This variable will be used in the prompt text to change based on the question
   correct = "SpongeBob lives on Conch St.";
   score = 0; // reset score at the start of question 1
   questionNumber = 1;
   nextQuestion = 2;
-  // Clear any pending auto-advance timeout when (re)starting question 1
-  if (autoAdvanceTimeout) {
-    clearTimeout(autoAdvanceTimeout);
-    autoAdvanceTimeout = null;
-  }
   // Reset score when restarting the quiz at question 1
   score = 0;
   updateProgressBar();
@@ -195,6 +228,7 @@ function question2() {
   correct = "SpongeBob loves his job at the Krusty Krab.";
   questionNumber = 2;
   updateImage(); // change the image to match this question
+  hideNextButton();
 }
 
 // When the user clicks the "Question three" button, call this function
@@ -212,6 +246,7 @@ function question3() {
   correct = "SpongeBob's favorite thing is making Krabby Patties.";
   questionNumber = 3;
   updateImage(); // change the image to match this question
+  hideNextButton();
 }
 function question4() {
   setPromptText("Question 4: Who is SpongeBob's best friend?");
@@ -223,6 +258,7 @@ function question4() {
   correct = "SpongeBob's best friend is Patrick Star.";
   questionNumber = 4;
   updateImage(); // change the image to match this question
+  hideNextButton();
 }
 function question5() {
   setPromptText("Question 5: Has SpongeBob ever been a superhero?");
@@ -234,6 +270,7 @@ function question5() {
   correct = "SpongeBob has been a superhero called 'The Quickster'.";
   questionNumber = 5;
   updateImage(); // change the image to match this question
+  hideNextButton();
 }
 function question6() {
   setPromptText("Question 6: Is Jerry really different from Larry?");
@@ -246,6 +283,7 @@ function question6() {
     "Jerry is very different from Larry. Why did you have to go, Gary???";
   questionNumber = 6;
   updateImage(); // change the image to match this question
+  hideNextButton();
 }
 function question7() {
   setPromptText("Question 7: Does SpongeBob hate Plankton?");
@@ -257,6 +295,7 @@ function question7() {
   correct = "SpongeBob does not hate Plankton.";
   questionNumber = 7;
   updateImage(); // change the image to match this question
+  hideNextButton();
 }
 function question8() {
   setPromptText("Question 8: Will SpongeBob ever get his boating license?");
@@ -268,6 +307,7 @@ function question8() {
   correct = "SpongeBob is never going to get his boating license.";
   questionNumber = 8;
   updateImage(); // change the image to match this question
+  hideNextButton();
 }
 function question9() {
   setPromptText("Question 9: Has SpongeBob ever defeated a god?");
@@ -279,6 +319,7 @@ function question9() {
   correct = "SpongeBob has defeated a god; King Neptune.";
   questionNumber = 9;
   updateImage(); // change the image to match this question
+  hideNextButton();
 }
 function question10() {
   setPromptText(
@@ -292,6 +333,7 @@ function question10() {
   correct = "SpongeBob has had to move out of his old Pineapple house.";
   questionNumber = 10;
   updateImage(); // change the image to match this question
+  hideNextButton();
 }
 function question11() {
   setPromptText(
@@ -299,8 +341,10 @@ function question11() {
   );
   // Hide choice buttons and image at the end of the game
   document.querySelector(".questionchoices").classList.add("hidden");
-  document.querySelector(".spongebobimage").classList.add("hidden");
-}
+  document.querySelector(".spongebobimage").classList.remove("hidden");
+hideNextButton();
+  questionNumber = 11;}
+
 // Shuffle the choice buttons by reordering the DOM nodes.
 // This preserves event listeners, classes, and data-* attributes.
 function shuffleChoiceButtons() {

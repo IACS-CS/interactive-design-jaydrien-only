@@ -15,10 +15,17 @@ h1 {
   align-items: center; /* center vertically */
 }
 
-.questionchoices.hidden {
+.nextbutton {
+  transition: opacity 300ms ease;
+  display: flex;
+  justify-content: center; /* center horizontally */
+  align-items: center; /* center vertically */
+  margin-top: 1rem;
+}
+
+.nextbutton.hidden {
   opacity: 0;
   pointer-events: none; /* prevent clicking while hidden */
-  /* keep out of document flow when hidden */
 }
 button {
   border-radius: 99px;
@@ -84,4 +91,8 @@ h1 {
   display: flex;
   justify-content: center; /* center horizontally */
   align-items: center; /* center vertically */
+}
+.questionchoices.hidden {
+  opacity: 0;
+  pointer-events: none; /* prevent clicking while hidden */
 }
