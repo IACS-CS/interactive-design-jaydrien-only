@@ -10,6 +10,8 @@ let nextQuestion = 2;
 // Variable to track a simple numeric score. The progress bar will show
 // the `score` value's first character inside `.progress-first`.
 let score = 0;
+// Variable to track if this is the first time clicking the Start button
+let Start = true;
 // Initialize: hide choice buttons on page load (questionNumber starts at 0, which is < 1)
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelector(".questionchoices").classList.add("hidden");
@@ -78,6 +80,20 @@ function setChoiceText(firstText, secondText) {
     buttons[1].textContent = secondText;
   }
 }
+
+// Helper function: change the Start button text to Restart on first click
+function changeStartToRestart() {
+  // Only change the button text once (when Start is true)
+  if (Start) {
+    var startBtn = document.querySelector(".questions button");
+    if (startBtn) {
+      startBtn.textContent = "Restart";
+    }
+    // Set Start to false so this only happens once
+    Start = false;
+  }
+}
+
 // Function: change the image based on the current question number
 function updateImage() {
   var imageElement = document.querySelector(".spongebobimage img");
@@ -90,10 +106,10 @@ function updateImage() {
     2: "./images/goodkrabbypatty.png",
     3: "./images/goodkrabbypatty.png",
     4: "./images/patrick.png",
-    5: "./images/superhero.png",
+    5: "./images/quickster.png",
     6: "./images/gary.png",
     7: "./images/plankton.png",
-    8: "./images/boatinglicense.png",
+    8: "./images/carcrash.png",
     9: "./images/kingneptune.png",
     10: "./images/pineapple.jpg",
   };
@@ -170,6 +186,7 @@ function handleChoice(buttonEl) {
     score = score + 1;
     updateProgressBar();
   } else {
+    document.querySelector(".questions").classList.remove("hidden");
     // Display "Incorrect." in bold and red, followed by the explanation
     setPromptText(
       "<b style='color: red;'>Incorrect.</b> " +
@@ -200,6 +217,9 @@ function question1() {
   document.querySelector(".spongebobimage").classList.add("hidden");
   // Hide the Next button until an answer is chosen
   hideNextButton();
+  // Change the Start button to Restart (only on first click)
+  changeStartToRestart();
+  document.querySelector(".questions").classList.add("hidden");
   // This variable will be used in the prompt text to change based on the question
   correct = "SpongeBob lives on Conch St.";
   score = 0; // reset score at the start of question 1
@@ -342,8 +362,10 @@ function question11() {
   // Hide choice buttons and image at the end of the game
   document.querySelector(".questionchoices").classList.add("hidden");
   document.querySelector(".spongebobimage").classList.remove("hidden");
-hideNextButton();
-  questionNumber = 11;}
+  document.querySelector(".questions").classList.remove("hidden");
+  hideNextButton();
+  questionNumber = 11;
+}
 
 // Shuffle the choice buttons by reordering the DOM nodes.
 // This preserves event listeners, classes, and data-* attributes.

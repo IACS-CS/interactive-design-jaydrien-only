@@ -1,5 +1,6 @@
 /* font */
 @import url("https://fonts.googleapis.com/css2?family=Nabla&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
 h1 {
   font-family: "Nabla", system-ui;
   font-optical-sizing: auto;
@@ -16,7 +17,7 @@ h1 {
 }
 
 .nextbutton {
-  transition: opacity 300ms ease;
+  transition: opacity 100ms ease;
   display: flex;
   justify-content: center; /* center horizontally */
   align-items: center; /* center vertically */
@@ -93,6 +94,14 @@ h1 {
   align-items: center; /* center vertically */
 }
 .questionchoices.hidden {
+  opacity: 0;
+  pointer-events: none; /* prevent clicking while hidden */
+}
+p {
+  font-family: "Indie Flower", sans-serif;
+  font-size: 1.25rem;
+}
+.questions.hidden {
   opacity: 0;
   pointer-events: none; /* prevent clicking while hidden */
 }
